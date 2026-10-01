@@ -1,4 +1,6 @@
-﻿using CleanTube.Application.Features.Authentication.Commands.Register;
+﻿using CleanTube.Application.Features.Authentication.Commands.CreateRole;
+using CleanTube.Application.Features.Authentication.Commands.Login;
+using CleanTube.Application.Features.Authentication.Commands.Register;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,5 +26,28 @@ namespace CleanTube.Api.Controllers
 
             return Ok(userId);
         }
+
+
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(
+    LoginCommand command)
+        {
+            var token = await _mediator.Send(command);
+
+            return Ok(token);
+        }
+
+
+        [HttpPost("roles")]
+        public async Task<IActionResult> CreateRole(
+    CreateRoleCommand command)
+        {
+            await _mediator.Send(command);
+
+            return Ok();
+        }
+
+
     }
 }

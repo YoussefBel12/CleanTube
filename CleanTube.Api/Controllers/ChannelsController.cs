@@ -1,5 +1,6 @@
 ﻿using CleanTube.Application.Features.Channels.Commands;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,8 @@ namespace CleanTube.Api.Controllers
         }
 
         [HttpPost]
+        // [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<IActionResult> Create(
             CreateChannelCommand command)
         {

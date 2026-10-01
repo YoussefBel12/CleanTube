@@ -47,6 +47,16 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 //this one for identity 
 builder.Services.AddScoped<IIdentityService, IdentityService>();
+//this one for jwt token generation
+builder.Services.AddScoped<IJwtService, JwtService>();
+
+//jwt based things
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+
+
 
 
 //Mediiatr

@@ -9,7 +9,7 @@ using MediatR;
 namespace CleanTube.Application.Features.Authentication.Commands.Register
 {
     public class RegisterCommandHandler
-      : IRequestHandler<RegisterCommand, string>
+     : IRequestHandler<RegisterCommand, string>
     {
         private readonly IIdentityService _identityService;
 
@@ -32,6 +32,10 @@ namespace CleanTube.Application.Features.Authentication.Commands.Register
                 throw new Exception(
                     string.Join(", ", result.Errors));
             }
+
+            await _identityService.AddUserToRoleAsync(
+                result.UserId!,
+                "User");
 
             return result.UserId!;
         }
