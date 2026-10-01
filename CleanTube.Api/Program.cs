@@ -1,5 +1,6 @@
 using System.Text;
 using CleanTube.Application.Common.Behaviors;
+using CleanTube.Application.Common.Mappings;
 using CleanTube.Application.Features.Channels.Commands;
 using CleanTube.Application.Interfaces;
 using CleanTube.Infrastructure.Data;
@@ -54,7 +55,9 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-
+//this is registrin automapper 
+builder.Services.AddAutoMapper(
+    typeof(VideoProfile));
 
 
 

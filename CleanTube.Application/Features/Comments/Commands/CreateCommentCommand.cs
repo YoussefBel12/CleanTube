@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MediatR;
 
-namespace CleanTube.Application.Dtos.Comments
+namespace CleanTube.Application.Features.Comments.Commands
 {
-    public class CommentDto
+    public class CreateCommentCommand : IRequest<int>
     {
-        public int Id { get; set; }
-
         public string Content { get; set; } = string.Empty;
-
-        public DateTime CreatedAt { get; set; }
-
-        public string UserId { get; set; } = string.Empty;
 
         public int VideoId { get; set; }
     }

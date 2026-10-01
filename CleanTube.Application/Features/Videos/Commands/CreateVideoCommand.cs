@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MediatR;
 
-namespace CleanTube.Application.Dtos.Videos
+namespace CleanTube.Application.Features.Videos.Commands
 {
-    public class VideoDto
+    public class CreateVideoCommand : IRequest<int>
     {
-        public int Id { get; set; }
-
         public string Title { get; set; } = string.Empty;
 
         public string Description { get; set; } = string.Empty;
@@ -17,8 +16,6 @@ namespace CleanTube.Application.Dtos.Videos
         public string VideoUrl { get; set; } = string.Empty;
 
         public string ThumbnailUrl { get; set; } = string.Empty;
-
-        public DateTime UploadedAt { get; set; }
 
         public int ChannelId { get; set; }
     }

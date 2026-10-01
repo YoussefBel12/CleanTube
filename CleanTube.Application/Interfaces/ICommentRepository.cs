@@ -10,9 +10,15 @@ namespace CleanTube.Application.Interfaces
     public interface ICommentRepository
     {
         Task<Comment?> GetByIdAsync(int id);
+
         Task<IEnumerable<Comment>> GetAllAsync();
+
+        Task<IEnumerable<Comment>> GetByVideoIdAsync(int videoId);
+
         Task AddAsync(Comment comment);
+
         void Update(Comment comment);
+
         void Delete(Comment comment);
     }
 }

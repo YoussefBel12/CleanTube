@@ -43,5 +43,15 @@ namespace CleanTube.Infrastructure.Repositories
         {
             _context.Comments.Remove(comment);
         }
+
+
+        public async Task<IEnumerable<Comment>> GetByVideoIdAsync(int videoId)
+        {
+            return await _context.Comments
+                .Where(c => c.VideoId == videoId)
+                .ToListAsync();
+        }
+
     }
+
 }
