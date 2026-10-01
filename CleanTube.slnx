@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="CleanTube.Api/CleanTube.Api.csproj" />
+  <Project Path="CleanTube.Application/CleanTube.Application.csproj" />
+  <Project Path="CleanTube.Domain/CleanTube.Domain.csproj" />
+  <Project Path="CleanTube.Infrastructure/CleanTube.Infrastructure.csproj" />
+</Solution>
