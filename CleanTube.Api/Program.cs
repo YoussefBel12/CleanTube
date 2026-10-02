@@ -168,6 +168,20 @@ builder.Services.AddSwaggerGen(options =>
 
 
 
+//cors configuration for react 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactClient", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:64474")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+
 
 
 
@@ -185,6 +199,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+//cors one
+app.UseCors("ReactClient");
 
 app.UseAuthentication();
 app.UseAuthorization();

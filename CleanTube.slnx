@@ -1,4 +1,8 @@
 <Solution>
+  <Project Path="cleantube-client/cleantube-client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
   <Project Path="CleanTube.Api/CleanTube.Api.csproj" />
   <Project Path="CleanTube.Application/CleanTube.Application.csproj" />
   <Project Path="CleanTube.Domain/CleanTube.Domain.csproj" />
