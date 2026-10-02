@@ -6,6 +6,7 @@ using CleanTube.Application.Interfaces;
 using CleanTube.Infrastructure.Data;
 using CleanTube.Infrastructure.Identity;
 using CleanTube.Infrastructure.Repositories;
+using CleanTube.Infrastructure.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -39,6 +40,8 @@ builder.Services
 
 
 //add scoped for services
+
+builder.Services.AddScoped<IVideoFileStorage, VideoFileStorage>();
 
 builder.Services.AddScoped<IChannelRepository, ChannelRepository>();
 builder.Services.AddScoped<IVideoRepository, VideoRepository>();
@@ -199,6 +202,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 //cors one
 app.UseCors("ReactClient");
 

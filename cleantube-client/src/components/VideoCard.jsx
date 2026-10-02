@@ -17,7 +17,7 @@ function VideoCard({ video }) {
 
     return (
         <Card
-            onClick={() => navigate(`/ video / ${ video.id } `)}
+            onClick={() => navigate(`/video/${video.id}`)}
             sx={{
                 backgroundColor: "transparent",
                 boxShadow: "none",
@@ -49,7 +49,7 @@ function VideoCard({ video }) {
                     <Box
                         component="img"
                         className="thumbnail"
-                        src={video.thumbnailUrl}
+                        src={`https://localhost:7140${video.thumbnailUrl}`}
                         alt={video.title}
                         sx={{
                             width: "100%",
@@ -160,7 +160,7 @@ function VideoCard({ video }) {
                                 mt: 0.5,
                             }}
                         >
-                            CleanTube Channel
+                            {video.channelName}
                         </Typography>
 
                         <Typography
@@ -184,4 +184,8 @@ function VideoCard({ video }) {
 }
 
 export default VideoCard;
+
+
+
+
 

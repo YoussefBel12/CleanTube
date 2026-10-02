@@ -1,4 +1,4 @@
-
+import CommentSection from "../components/CommentSection";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -28,7 +28,7 @@ function Video() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        api.get(`/ Videos / ${ id } `)
+        api.get(`/Videos/${id}`)
             .then((response) => {
                 setVideo(response.data);
             })
@@ -99,28 +99,66 @@ function Video() {
                 }}
             >
                 {/* Video player */}
+                ```jsx
                 <Box
                     sx={{
                         width: "100%",
                         aspectRatio: "16 / 9",
-                        backgroundColor: "#050507",
                         borderRadius: 3,
                         overflow: "hidden",
+                        position: "relative",
+                        background:
+                            "radial-gradient(circle at 30% 20%, #292932, #08080b 70%)",
                         boxShadow:
                             "0 20px 60px rgba(0,0,0,0.35)",
                     }}
                 >
-                    <video
-                        controls
-                        poster={video.thumbnailUrl}
-                        src={video.videoUrl}
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            display: "block",
-                        }}
-                    />
+                    {video.videoUrl ? (
+                        <video
+                            controls
+                            poster={`https://localhost:7140${video.thumbnailUrl}`}
+                            src={`https://localhost:7140${video.videoUrl}`}
+                            style={{
+                                width: "100%",
+                                borderRadius: "12px",
+                            }}
+                        />
+                    ) : (
+                        <Box
+                            sx={{
+                                width: "100%",
+                                height: "100%",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: 1,
+                            }}
+                        >
+                            <Typography
+                                sx={{
+                                    fontSize: 48,
+                                    fontWeight: 900,
+                                    color: "rgba(255,255,255,0.08)",
+                                    letterSpacing: "-2px",
+                                }}
+                            >
+                                CLEAN
+                            </Typography>
+
+                            <Typography
+                                sx={{
+                                    color: "#777",
+                                    fontSize: 14,
+                                }}
+                            >
+                                Video preview
+                            </Typography>
+                        </Box>
+                    )}
                 </Box>
+                ```
+
 
                 {/* Title */}
                 <Typography
@@ -171,7 +209,7 @@ function Video() {
                                     color: "white",
                                 }}
                             >
-                                CleanTube Channel
+                                {video.channelName}
                             </Typography>
 
                             <Typography
@@ -259,6 +297,7 @@ function Video() {
                         p: 3,
                     }}
                 >
+                    <CommentSection videoId={id} />
                     <Typography
                         sx={{
                             fontWeight: 700,

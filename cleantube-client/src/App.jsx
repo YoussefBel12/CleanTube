@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-
+import UploadVideo from "./pages/UploadVideo";
 import Home from "./pages/Home";
 import Video from "./pages/Video";
 import Login from "./pages/Login";
@@ -12,6 +12,7 @@ function App() {
             <Route path="/video/:id" element={<Video />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/upload" element={<UploadVideo />} />
         </Routes>
     );
 }

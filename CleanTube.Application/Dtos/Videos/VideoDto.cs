@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace CleanTube.Application.Dtos.Videos
 {
+
     public class VideoDto
     {
         public int Id { get; set; }
@@ -21,5 +17,7 @@ namespace CleanTube.Application.Dtos.Videos
         public DateTime UploadedAt { get; set; }
 
         public int ChannelId { get; set; }
+
+        public string ChannelName { get; set; } = string.Empty;
     }
 }

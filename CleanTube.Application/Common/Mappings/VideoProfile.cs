@@ -14,7 +14,14 @@ namespace CleanTube.Application.Common.Mappings
     {
         public VideoProfile()
         {
-            CreateMap<Video, VideoDto>();
+            CreateMap<Video, VideoDto>()
+                .ForMember(
+                dest => dest.ChannelName,
+                opt => opt.MapFrom(src => src.Channel.Name)
+
+
+                );
         }
     }
 }
+

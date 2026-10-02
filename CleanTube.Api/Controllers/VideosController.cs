@@ -22,7 +22,7 @@ namespace CleanTube.Api.Controllers
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Create(
-            CreateVideoCommand command)
+            [FromForm] CreateVideoCommand command)
         {
             var videoId = await _mediator.Send(command);
 

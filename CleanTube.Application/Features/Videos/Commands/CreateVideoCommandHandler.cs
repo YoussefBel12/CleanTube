@@ -10,19 +10,22 @@ using MediatR;
 namespace CleanTube.Application.Features.Videos.Commands
 {
     public class CreateVideoCommandHandler
-    : IRequestHandler<CreateVideoCommand, int>
+     : IRequestHandler<CreateVideoCommand, int>
     {
         private readonly IVideoRepository _videoRepository;
         private readonly IChannelRepository _channelRepository;
+        private readonly IVideoFileStorage _videoFileStorage;
         private readonly IUnitOfWork _unitOfWork;
 
         public CreateVideoCommandHandler(
             IVideoRepository videoRepository,
             IChannelRepository channelRepository,
+            IVideoFileStorage videoFileStorage,
             IUnitOfWork unitOfWork)
         {
             _videoRepository = videoRepository;
             _channelRepository = channelRepository;
+            _videoFileStorage = videoFileStorage;
             _unitOfWork = unitOfWork;
         }
 
@@ -36,12 +39,18 @@ namespace CleanTube.Application.Features.Videos.Commands
             if (channel is null)
                 throw new KeyNotFoundException("Channel not found.");
 
+            var (videoUrl, thumbnailUrl) =
+                await _videoFileStorage.SaveAsync(
+                    request.VideoFile!,
+                    request.ThumbnailFile!,
+                    cancellationToken);
+
             var video = new Video
             {
                 Title = request.Title,
                 Description = request.Description,
-                VideoUrl = request.VideoUrl,
-                ThumbnailUrl = request.ThumbnailUrl,
+                VideoUrl = videoUrl,
+                ThumbnailUrl = thumbnailUrl,
                 ChannelId = request.ChannelId,
                 UploadedAt = DateTime.UtcNow
             };
