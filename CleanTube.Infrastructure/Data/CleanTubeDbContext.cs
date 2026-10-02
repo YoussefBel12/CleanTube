@@ -22,5 +22,23 @@ namespace CleanTube.Infrastructure.Data
         public DbSet<Comment> Comments => Set<Comment>();
         public DbSet<Like> Likes { get; set; }
         public DbSet<Subscription> Subscriptions => Set<Subscription>();
+
+
+
+
+
+
+        protected override void OnModelCreating(
+    ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(
+                typeof(CleanTubeDbContext).Assembly);
+        }
+
+
+
+
     }
 }

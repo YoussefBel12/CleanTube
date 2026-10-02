@@ -45,6 +45,14 @@ namespace CleanTube.Infrastructure.Repositories
             _context.Channels.Remove(channel);
         }
 
+        public async Task<IEnumerable<Channel>> GetByOwnerIdAsync(
+    string ownerId)
+        {
+            return await _context.Channels
+                .Where(x => x.OwnerId == ownerId)
+                .ToListAsync();
+        }
+
 
     }
 }

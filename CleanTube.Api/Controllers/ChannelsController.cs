@@ -1,4 +1,5 @@
 ﻿using CleanTube.Application.Features.Channels.Commands;
+using CleanTube.Application.Features.Channels.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -27,6 +28,35 @@ namespace CleanTube.Api.Controllers
             var channelId = await _mediator.Send(command);
 
             return Ok(channelId);
+        }
+
+
+
+        [HttpGet("my")]
+        [Authorize]
+        public async Task<IActionResult> GetMyChannels()
+        {
+            var channels = await _mediator.Send(
+                new GetMyChannelsQuery());
+
+            return Ok(channels);
+        }
+
+
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var channel = await _mediator.Send(
+                new GetChannelByIdQuery
+                {
+                    Id = id
+                });
+
+            if (channel is null)
+                return NotFound();
+
+            return Ok(channel);
         }
 
 

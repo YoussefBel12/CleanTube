@@ -10,18 +10,21 @@ using MediatR;
 namespace CleanTube.Application.Features.Comments.Commands
 {
     public class CreateCommentCommandHandler
-     : IRequestHandler<CreateCommentCommand, int>
+    : IRequestHandler<CreateCommentCommand, int>
     {
         private readonly ICommentRepository _commentRepository;
+        private readonly IVideoRepository _videoRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
 
         public CreateCommentCommandHandler(
             ICommentRepository commentRepository,
+            IVideoRepository videoRepository,
             IUnitOfWork unitOfWork,
             ICurrentUserService currentUserService)
         {
             _commentRepository = commentRepository;
+            _videoRepository = videoRepository;
             _unitOfWork = unitOfWork;
             _currentUserService = currentUserService;
         }
@@ -34,6 +37,12 @@ namespace CleanTube.Application.Features.Comments.Commands
 
             if (userId is null)
                 throw new UnauthorizedAccessException();
+
+            var video = await _videoRepository.GetByIdAsync(
+                request.VideoId);
+
+            if (video is null)
+                throw new KeyNotFoundException("Video not found.");
 
             var comment = new Comment
             {

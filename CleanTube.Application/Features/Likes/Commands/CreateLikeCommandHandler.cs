@@ -13,15 +13,18 @@ namespace CleanTube.Application.Features.Likes.Commands
     : IRequestHandler<CreateLikeCommand, int>
     {
         private readonly ILikeRepository _likeRepository;
+        private readonly IVideoRepository _videoRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
 
         public CreateLikeCommandHandler(
             ILikeRepository likeRepository,
+            IVideoRepository videoRepository,
             IUnitOfWork unitOfWork,
             ICurrentUserService currentUserService)
         {
             _likeRepository = likeRepository;
+            _videoRepository = videoRepository;
             _unitOfWork = unitOfWork;
             _currentUserService = currentUserService;
         }
@@ -35,8 +38,16 @@ namespace CleanTube.Application.Features.Likes.Commands
             if (userId is null)
                 throw new UnauthorizedAccessException();
 
-            var existingLike = await _likeRepository
-                .GetByUserAndVideoAsync(userId, request.VideoId);
+            var video = await _videoRepository.GetByIdAsync(
+                request.VideoId);
+
+            if (video is null)
+                throw new KeyNotFoundException("Video not found.");
+
+            var existingLike =
+                await _likeRepository.GetByUserAndVideoAsync(
+                    userId,
+                    request.VideoId);
 
             if (existingLike is not null)
                 return existingLike.Id;
@@ -44,7 +55,8 @@ namespace CleanTube.Application.Features.Likes.Commands
             var like = new Like
             {
                 UserId = userId,
-                VideoId = request.VideoId
+                VideoId = request.VideoId,
+                CreatedAt = DateTime.UtcNow
             };
 
             await _likeRepository.AddAsync(like);

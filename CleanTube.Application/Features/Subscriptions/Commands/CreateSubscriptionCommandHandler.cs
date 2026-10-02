@@ -10,18 +10,21 @@ using MediatR;
 namespace CleanTube.Application.Features.Subscriptions.Commands
 {
     public class CreateSubscriptionCommandHandler
-    : IRequestHandler<CreateSubscriptionCommand, int>
+     : IRequestHandler<CreateSubscriptionCommand, int>
     {
         private readonly ISubscriptionRepository _subscriptionRepository;
+        private readonly IChannelRepository _channelRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
 
         public CreateSubscriptionCommandHandler(
             ISubscriptionRepository subscriptionRepository,
+            IChannelRepository channelRepository,
             IUnitOfWork unitOfWork,
             ICurrentUserService currentUserService)
         {
             _subscriptionRepository = subscriptionRepository;
+            _channelRepository = channelRepository;
             _unitOfWork = unitOfWork;
             _currentUserService = currentUserService;
         }
@@ -34,6 +37,20 @@ namespace CleanTube.Application.Features.Subscriptions.Commands
 
             if (userId is null)
                 throw new UnauthorizedAccessException();
+
+            var channel = await _channelRepository.GetByIdAsync(
+                request.ChannelId);
+
+            if (channel is null)
+                throw new KeyNotFoundException("Channel not found.");
+
+
+            if (channel.OwnerId == userId)
+                throw new InvalidOperationException(
+                    "You cannot subscribe to your own channel.");
+
+
+
 
             var existingSubscription =
                 await _subscriptionRepository.GetByUserAndChannelAsync(

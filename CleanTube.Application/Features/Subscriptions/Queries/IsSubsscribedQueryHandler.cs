@@ -9,16 +9,19 @@ using MediatR;
 namespace CleanTube.Application.Features.Subscriptions.Queries
 {
     public class IsSubscribedQueryHandler
-    : IRequestHandler<IsSubscribedQuery, bool>
+     : IRequestHandler<IsSubscribedQuery, bool>
     {
         private readonly ISubscriptionRepository _subscriptionRepository;
+        private readonly IChannelRepository _channelRepository;
         private readonly ICurrentUserService _currentUserService;
 
         public IsSubscribedQueryHandler(
             ISubscriptionRepository subscriptionRepository,
+            IChannelRepository channelRepository,
             ICurrentUserService currentUserService)
         {
             _subscriptionRepository = subscriptionRepository;
+            _channelRepository = channelRepository;
             _currentUserService = currentUserService;
         }
 
@@ -30,6 +33,12 @@ namespace CleanTube.Application.Features.Subscriptions.Queries
 
             if (userId is null)
                 throw new UnauthorizedAccessException();
+
+            var channel = await _channelRepository.GetByIdAsync(
+                request.ChannelId);
+
+            if (channel is null)
+                throw new KeyNotFoundException("Channel not found.");
 
             var subscription =
                 await _subscriptionRepository.GetByUserAndChannelAsync(

@@ -9,18 +9,21 @@ using MediatR;
 namespace CleanTube.Application.Features.Subscriptions.Commands
 {
     public class DeleteSubscriptionCommandHandler
-    : IRequestHandler<DeleteSubscriptionCommand>
+     : IRequestHandler<DeleteSubscriptionCommand>
     {
         private readonly ISubscriptionRepository _subscriptionRepository;
+        private readonly IChannelRepository _channelRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
 
         public DeleteSubscriptionCommandHandler(
             ISubscriptionRepository subscriptionRepository,
+            IChannelRepository channelRepository,
             IUnitOfWork unitOfWork,
             ICurrentUserService currentUserService)
         {
             _subscriptionRepository = subscriptionRepository;
+            _channelRepository = channelRepository;
             _unitOfWork = unitOfWork;
             _currentUserService = currentUserService;
         }
@@ -33,6 +36,12 @@ namespace CleanTube.Application.Features.Subscriptions.Commands
 
             if (userId is null)
                 throw new UnauthorizedAccessException();
+
+            var channel = await _channelRepository.GetByIdAsync(
+                request.ChannelId);
+
+            if (channel is null)
+                throw new KeyNotFoundException("Channel not found.");
 
             var subscription =
                 await _subscriptionRepository.GetByUserAndChannelAsync(

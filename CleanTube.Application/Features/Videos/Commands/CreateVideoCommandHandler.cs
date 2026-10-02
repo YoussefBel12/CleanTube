@@ -13,13 +13,16 @@ namespace CleanTube.Application.Features.Videos.Commands
     : IRequestHandler<CreateVideoCommand, int>
     {
         private readonly IVideoRepository _videoRepository;
+        private readonly IChannelRepository _channelRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public CreateVideoCommandHandler(
             IVideoRepository videoRepository,
+            IChannelRepository channelRepository,
             IUnitOfWork unitOfWork)
         {
             _videoRepository = videoRepository;
+            _channelRepository = channelRepository;
             _unitOfWork = unitOfWork;
         }
 
@@ -27,6 +30,12 @@ namespace CleanTube.Application.Features.Videos.Commands
             CreateVideoCommand request,
             CancellationToken cancellationToken)
         {
+            var channel = await _channelRepository.GetByIdAsync(
+                request.ChannelId);
+
+            if (channel is null)
+                throw new KeyNotFoundException("Channel not found.");
+
             var video = new Video
             {
                 Title = request.Title,
