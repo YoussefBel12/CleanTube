@@ -15,6 +15,8 @@ namespace CleanTube.Application.Interfaces
             string userId,
             int videoId);
 
+        Task<int> GetLikeCountAsync(int videoId);
+
         Task AddAsync(Like like);
 
         void Delete(Like like);

@@ -44,5 +44,14 @@ namespace CleanTube.Infrastructure.Repositories
         {
             _context.Set<Like>().Remove(like);
         }
+
+
+        public async Task<int> GetLikeCountAsync(int videoId)
+        {
+            return await _context.Set<Like>()
+                .CountAsync(x => x.VideoId == videoId);
+        }
+
+
     }
 }

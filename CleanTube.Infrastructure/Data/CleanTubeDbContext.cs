@@ -20,5 +20,7 @@ namespace CleanTube.Infrastructure.Data
         public DbSet<Channel> Channels => Set<Channel>();
         public DbSet<Video> Videos => Set<Video>();
         public DbSet<Comment> Comments => Set<Comment>();
+        public DbSet<Like> Likes { get; set; }
+        public DbSet<Subscription> Subscriptions => Set<Subscription>();
     }
 }

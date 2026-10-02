@@ -45,6 +45,8 @@ builder.Services.AddScoped<IVideoRepository, VideoRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 //this unit of work is just code separated from the 3 repos to save changes
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ILikeRepository, LikeRepository>();
+builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 
 //this one for identity 
 builder.Services.AddScoped<IIdentityService, IdentityService>();
