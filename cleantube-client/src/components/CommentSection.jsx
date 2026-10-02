@@ -42,7 +42,7 @@ function CommentSection({ videoId }) {
             setContent("");
 
             const response = await api.get(
-                `/ Comments / video / ${ videoId } `
+                `/Comments/video/${videoId}`
             );
 
             setComments(response.data);
@@ -169,7 +169,7 @@ function CommentSection({ videoId }) {
                                         fontSize: 14,
                                     }}
                                 >
-                                    User
+                                    {comment.userName || "User"}
                                 </Typography>
 
                                 <Typography

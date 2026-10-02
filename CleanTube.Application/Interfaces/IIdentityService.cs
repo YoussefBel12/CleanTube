@@ -22,5 +22,8 @@ namespace CleanTube.Application.Interfaces
     string userId,
     string roleName);
 
+
+        Task<string?> GetUserNameAsync(string userId);
+
     }
 }

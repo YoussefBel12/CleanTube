@@ -68,6 +68,7 @@ namespace CleanTube.Api.Controllers
         }
 
 
+        [HttpGet("videos")][Authorize] public async Task<IActionResult> GetSubscribedVideos() { var videos = await _mediator.Send(new GetSubscribedVideosQuery()); return Ok(videos); }
 
 
 

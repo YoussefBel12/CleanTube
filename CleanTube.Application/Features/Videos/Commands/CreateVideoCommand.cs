@@ -35,7 +35,7 @@ namespace CleanTube.Application.Features.Videos.Commands
 
         public IFormFile? ThumbnailFile { get; set; }
 
-        public int ChannelId { get; set; }
+       // public int ChannelId { get; set; }
     }
 
 }

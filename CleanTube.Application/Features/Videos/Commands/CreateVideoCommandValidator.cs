@@ -65,8 +65,9 @@ public class CreateVideoCommandValidator
         RuleFor(x => x.Description)
             .MaximumLength(5000);
 
-        RuleFor(x => x.ChannelId)
+      /*  RuleFor(x => x.ChannelId)
             .GreaterThan(0);
+      */
 
         RuleFor(x => x.VideoFile)
             .NotNull()

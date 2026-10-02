@@ -15,7 +15,7 @@ import api from "../api/axios";
 function UploadVideo() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [channelId, setChannelId] = useState(1);
+    {/* const [channelId, setChannelId] = useState(1); */ }
 
     const [videoFile, setVideoFile] = useState(null);
     const [thumbnailFile, setThumbnailFile] = useState(null);
@@ -35,7 +35,7 @@ function UploadVideo() {
 
         formData.append("Title", title);
         formData.append("Description", description);
-        formData.append("ChannelId", channelId);
+        {/*  formData.append("ChannelId", channelId); */ }
         formData.append("VideoFile", videoFile);
         formData.append("ThumbnailFile", thumbnailFile);
 
@@ -135,16 +135,7 @@ function UploadVideo() {
                             fullWidth
                         />
 
-                        <TextField
-                            label="Channel ID"
-                            type="number"
-                            value={channelId}
-                            onChange={(e) =>
-                                setChannelId(e.target.value)
-                            }
-                            required
-                            fullWidth
-                        />
+                   
 
                         <Box>
                             <Typography
