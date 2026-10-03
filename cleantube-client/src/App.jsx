@@ -5,7 +5,9 @@ import Video from "./pages/Video";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Subscriptions from "./pages/Subscriptions";
-
+import Channel from "./pages/Channel";
+import CreateChannel from "./pages/CreateChannel";
+import CustomizeChannel from "./pages/CustomizeChannel";
 function App() {
     return (
         <Routes>
@@ -16,7 +18,16 @@ function App() {
             <Route path="/upload" element={<UploadVideo />} />
             <Route
                 path="/subscriptions"
-                element={<Subscriptions />}
+                element={<Subscriptions />} />
+            <Route path="/channel" element={<Channel />} />
+            <Route
+                path="/create-channel"
+                element={<CreateChannel />}
+            />
+
+            <Route
+                path="/channel/customize"
+                element={<CustomizeChannel />}
             />
         </Routes>
     );

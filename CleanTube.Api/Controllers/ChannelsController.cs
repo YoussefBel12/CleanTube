@@ -43,6 +43,32 @@ namespace CleanTube.Api.Controllers
         }
 
 
+
+
+
+
+        
+[HttpGet("me")]
+[Authorize]
+public async Task<IActionResult> GetMyChannel()
+        {
+            var channel = await _mediator.Send(
+                new GetMyChannelQuery());
+
+            if (channel is null)
+                return NotFound();
+
+            return Ok(channel);
+        }
+
+
+
+
+
+
+
+
+
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
@@ -58,6 +84,22 @@ namespace CleanTube.Api.Controllers
 
             return Ok(channel);
         }
+
+
+
+        
+[HttpPut("me")]
+[Authorize]
+public async Task<IActionResult> UpdateMyChannel(
+    UpdateChannelCommand command)
+        {
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
+
+
+
 
 
     }

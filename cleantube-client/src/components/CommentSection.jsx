@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 import {
     Box,
@@ -17,13 +18,41 @@ function CommentSection({ videoId }) {
     const [content, setContent] = useState("");
     const [loading, setLoading] = useState(true);
 
+    // Get logged-in user's username from JWT
+    const token = localStorage.getItem("token");
+
+    let currentUsername = "";
+
+    if (token) {
+        try {
+            const decoded = jwtDecode(token);
+
+            currentUsername =
+                decoded.unique_name ||
+                decoded.name ||
+                decoded[
+                    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+                ] ||
+                "";
+        } catch (error) {
+            console.error("JWT decode error:", error);
+        }
+    }
+
+    const currentAvatarLetter = currentUsername
+        ? currentUsername.charAt(0).toUpperCase()
+        : "U";
+
     useEffect(() => {
         api.get(`/Comments/video/${videoId}`)
             .then((response) => {
                 setComments(response.data);
             })
             .catch((error) => {
-                console.error("Comments API Error:", error);
+                console.error(
+                    "Comments API Error:",
+                    error
+                );
             })
             .finally(() => {
                 setLoading(false);
@@ -42,12 +71,15 @@ function CommentSection({ videoId }) {
             setContent("");
 
             const response = await api.get(
-                `/Comments/video/${videoId}`
+                `/Comments/video/${videoId} `
             );
 
             setComments(response.data);
         } catch (error) {
-            console.error("Create Comment Error:", error);
+            console.error(
+                "Create Comment Error:",
+                error
+            );
         }
     };
 
@@ -79,7 +111,7 @@ function CommentSection({ videoId }) {
                         fontWeight: 700,
                     }}
                 >
-                    Y
+                    {currentAvatarLetter}
                 </Avatar>
 
                 <Box sx={{ flex: 1 }}>
@@ -95,7 +127,8 @@ function CommentSection({ videoId }) {
                         sx={{
                             "& .MuiOutlinedInput-root": {
                                 borderRadius: 3,
-                                backgroundColor: "#151518",
+                                backgroundColor:
+                                    "#151518",
                             },
                         }}
                     />
@@ -126,7 +159,8 @@ function CommentSection({ videoId }) {
             <Divider
                 sx={{
                     mb: 3,
-                    borderColor: "rgba(255,255,255,0.06)",
+                    borderColor:
+                        "rgba(255,255,255,0.06)",
                 }}
             />
 
@@ -137,68 +171,84 @@ function CommentSection({ videoId }) {
                 </Typography>
             ) : comments.length === 0 ? (
                 <Typography color="text.secondary">
-                    No comments yet. Be the first to comment.
+                    No comments yet. Be the first to
+                    comment.
                 </Typography>
             ) : (
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                    {comments.map((comment) => (
-                        <Box
-                            key={comment.id}
-                            sx={{
-                                display: "flex",
-                                gap: 2,
-                            }}
-                        >
-                            <Avatar
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 3,
+                    }}
+                >
+                    {comments.map((comment) => {
+                        const commentUsername =
+                            comment.userName || "User";
+
+                        const commentAvatarLetter =
+                            commentUsername
+                                .charAt(0)
+                                .toUpperCase();
+
+                        return (
+                            <Box
+                                key={comment.id}
                                 sx={{
-                                    width: 40,
-                                    height: 40,
-                                    background:
-                                        "linear-gradient(135deg, #ff335f, #8b5cf6)",
-                                    fontWeight: 700,
+                                    display: "flex",
+                                    gap: 2,
                                 }}
                             >
-                                {comment.userId?.charAt(0).toUpperCase() ||
-                                    "U"}
-                            </Avatar>
-
-                            <Box>
-                                <Typography
+                                <Avatar
                                     sx={{
+                                        width: 40,
+                                        height: 40,
+                                        background:
+                                            "linear-gradient(135deg, #ff335f, #8b5cf6)",
                                         fontWeight: 700,
-                                        fontSize: 14,
                                     }}
                                 >
-                                    {comment.userName || "User"}
-                                </Typography>
+                                    {commentAvatarLetter}
+                                </Avatar>
 
-                                <Typography
-                                    sx={{
-                                        color: "text.secondary",
-                                        fontSize: 14,
-                                        mt: 0.5,
-                                        lineHeight: 1.6,
-                                    }}
-                                >
-                                    {comment.content}
-                                </Typography>
+                                <Box>
+                                    <Typography
+                                        sx={{
+                                            fontWeight: 700,
+                                            fontSize: 14,
+                                        }}
+                                    >
+                                        {commentUsername}
+                                    </Typography>
 
-                                <Typography
-                                    sx={{
-                                        color: "#666",
-                                        fontSize: 12,
-                                        mt: 0.5,
-                                    }}
-                                >
-                                    {comment.createdAt
-                                        ? new Date(
-                                              comment.createdAt
-                                          ).toLocaleDateString()
-                                        : ""}
-                                </Typography>
+                                    <Typography
+                                        sx={{
+                                            color: "text.secondary",
+                                            fontSize: 14,
+                                            mt: 0.5,
+                                            lineHeight: 1.6,
+                                        }}
+                                    >
+                                        {comment.content}
+                                    </Typography>
+
+                                    <Typography
+                                        sx={{
+                                            color: "#666",
+                                            fontSize: 12,
+                                            mt: 0.5,
+                                        }}
+                                    >
+                                        {comment.createdAt
+                                            ? new Date(
+                                                  comment.createdAt
+                                              ).toLocaleDateString()
+                                            : ""}
+                                    </Typography>
+                                </Box>
                             </Box>
-                        </Box>
-                    ))}
+                        );
+                    })}
                 </Box>
             )}
         </Box>
@@ -206,4 +256,5 @@ function CommentSection({ videoId }) {
 }
 
 export default CommentSection;
+
 

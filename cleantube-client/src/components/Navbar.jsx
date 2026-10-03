@@ -29,13 +29,37 @@ import {
     Logout as LogoutIcon,
 } from "@mui/icons-material";
 import { useLayout } from "../context/LayoutContext";
+import { jwtDecode } from "jwt-decode";
 function Navbar() {
     const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = useState(null);
 
     const menuOpen = Boolean(anchorEl);
-    const isLoggedIn = Boolean(localStorage.getItem("token"));
+    const token = localStorage.getItem("token");
+    const isLoggedIn = Boolean(token);
+
+    let username = "";
+
+    if (token) {
+        try {
+            const decoded = jwtDecode(token);
+
+            username =
+                decoded.unique_name ||
+                decoded.name ||
+                decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] ||
+                "";
+        } catch (error) {
+            console.error("JWT decode error:", error);
+        }
+    }
+
+    const avatarLetter = username
+        ? username.charAt(0).toUpperCase()
+        : "?";
+
+
 
     const handleAvatarClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -187,7 +211,7 @@ function Navbar() {
                             fontWeight: 700,
                         }}
                     >
-                        {isLoggedIn ? "Y" : "?"}
+                        {isLoggedIn ? avatarLetter : "?"}
                     </Avatar>
                 </IconButton>
 

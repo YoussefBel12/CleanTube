@@ -56,5 +56,22 @@ namespace CleanTube.Api.Controllers
 
 
 
+        
+[HttpGet("search")]
+public async Task<IActionResult> Search(
+    [FromQuery] string query)
+        {
+            var videos = await _mediator.Send(
+                new SearchVideosQuery
+                {
+                    Query = query
+                });
+
+            return Ok(videos);
+        }
+
+
+
+
     }
 }
