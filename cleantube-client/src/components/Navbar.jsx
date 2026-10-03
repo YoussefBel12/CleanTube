@@ -30,6 +30,7 @@ import {
 } from "@mui/icons-material";
 import { useLayout } from "../context/LayoutContext";
 import { jwtDecode } from "jwt-decode";
+
 function Navbar() {
     const navigate = useNavigate();
 
@@ -39,6 +40,7 @@ function Navbar() {
     const token = localStorage.getItem("token");
     const isLoggedIn = Boolean(token);
 
+    const [search, setSearch] = useState("");
     let username = "";
 
     if (token) {
@@ -156,8 +158,18 @@ function Navbar() {
                         }}
                     />
 
+                    
                     <InputBase
                         placeholder="Search videos, creators..."
+                        value={search}
+                        onChange={(event) => setSearch(event.target.value)}
+                        onKeyDown={(event) => {
+                            if (event.key === "Enter" && search.trim()) {
+                                navigate(
+                                    `/search?query=${encodeURIComponent(search.trim())}`
+                                );
+                            }
+                        }}
                         sx={{
                             flex: 1,
                             color: "white",
@@ -168,6 +180,8 @@ function Navbar() {
                             },
                         }}
                     />
+                    
+
                 </Box>
 
                 {isLoggedIn && (

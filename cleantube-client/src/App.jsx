@@ -8,6 +8,7 @@ import Subscriptions from "./pages/Subscriptions";
 import Channel from "./pages/Channel";
 import CreateChannel from "./pages/CreateChannel";
 import CustomizeChannel from "./pages/CustomizeChannel";
+import Search from "./pages/Search";
 function App() {
     return (
         <Routes>
@@ -29,6 +30,9 @@ function App() {
                 path="/channel/customize"
                 element={<CustomizeChannel />}
             />
+
+            <Route path="/search" element={<Search />} />
+
         </Routes>
     );
 }
